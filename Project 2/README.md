@@ -9,7 +9,7 @@
 
 This project demonstrates the creation of an API by using `Express.js`. I created an API for adding notes and also handled edge case like *empty title and content* and returned `400` response code with a message. And on successful creation of note, it'll return `201` response code.
 
-## How it Run
+## How it Run?
 
 To run it, follow these steps:
 

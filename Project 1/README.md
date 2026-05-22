@@ -12,7 +12,7 @@ This project demonstrates responsive web design by using only HTML, CSS, and JS 
 - A div block containing description on left side and an image on right.
 - At bottom, there's also a div containing three cards with some animations.
 
-## How it Run
+## How it Run?
 
 There're to two ways to run it, which are:
 
