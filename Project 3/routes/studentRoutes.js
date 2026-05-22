@@ -1,34 +1,38 @@
 const express = require("express");
 const router = express.Router();
 
-const Student = require("../models/Student");
+const connectDB = require("../database/db");
 
-// ? Add a new student
+// * Add a new student
 router.post("/", async (req, res) => {
-  try {
-    const student = new Student(req.body);
+  const db = await connectDB();
 
-    await student.save();
+  const { rollNumber, name, age, teacherId } = req.body;
 
-    res.status(201).json(student);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
+  if (!rollNumber || !name || !age || !teacherId) {
+    return res.status(400).json({
+      message: "All fields are required",
     });
   }
+
+  await db.run(
+    `INSERT INTO students (rollNumber, name, age, teacherId)
+         VALUES (?, ?, ?, ?)`,
+    [rollNumber, name, age, teacherId],
+  );
+
+  res.status(201).json({
+    message: "Student added successfully",
+  });
 });
 
-// ? Get all students
+// * Get all students
 router.get("/", async (req, res) => {
-  try {
-    const students = await Student.find();
+  const db = await connectDB();
 
-    res.json(students);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
+  const students = await db.all(`SELECT * FROM students`);
+
+  res.json(students);
 });
 
 module.exports = router;

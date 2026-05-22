@@ -16,6 +16,12 @@ const studentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
+  teacherId: {
+    type: Number, // * Adding reference to the Teacher model
+    required: true,
+    ref: "Teacher",
+  },
 });
 
 module.exports = mongoose.model("Student", studentSchema);

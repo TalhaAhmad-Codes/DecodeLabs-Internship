@@ -66,9 +66,10 @@ yarn.lock
 pnpm-lock.yaml
 
 # =========================
-# MongoDB
+# Database Files
 # =========================
 *.mongodb
+*.db
 
 # =========================
 # React Native / Expo

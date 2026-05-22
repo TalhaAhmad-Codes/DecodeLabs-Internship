@@ -1,34 +1,54 @@
 const express = require("express");
 const router = express.Router();
 
-const Teacher = require("../models/Teacher");
+const connectDB = require("../database/db");
 
-// ? Add a new teacher
+// * Add a new teacher
 router.post("/", async (req, res) => {
-  try {
-    const teacher = new Teacher(req.body);
+  const db = await connectDB();
 
-    await teacher.save();
+  const { name } = req.body;
 
-    res.status(201).json(teacher);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
+  if (!name) {
+    return res.status(400).json({
+      message: "All fields are required",
     });
   }
+
+  await db.run(
+    `INSERT INTO teachers (name)
+         VALUES (?)`,
+    [name],
+  );
+
+  res.status(201).json({
+    message: "Teacher added successfully",
+  });
 });
 
-// ? Get all teachers with their students
+// * Get all teachers
 router.get("/", async (req, res) => {
-  try {
-    const teachers = await Teacher.find().populate("students");
+  const db = await connectDB();
 
-    res.json(teachers);
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
+  const teachers = await db.all(`SELECT * FROM teachers`);
+
+  res.json(teachers);
+});
+
+// * Get all teachers with their assigned students
+router.get("/assigned-students", async (req, res) => {
+  const db = await connectDB();
+
+  // * Used JOIN to fetch teachers along with their students
+  const teachers = await db.all(`
+        SELECT teachers.name AS teacherName,
+              students.name AS studentName
+        FROM teachers
+        JOIN students
+        ON teachers.id = students.teacherId
+    `);
+
+  res.json(teachers);
 });
 
 module.exports = router;
