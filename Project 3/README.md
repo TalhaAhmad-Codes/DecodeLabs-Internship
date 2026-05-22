@@ -15,13 +15,13 @@ This project demonstrates the connection between **Backend** and **Database**. I
 | rollNumber | Number | No |
 | name | String | No |
 | age | Number | No |
+| teacherId | Ref | No |
 > **Link:** http://localhost:3000/students
 
 **Teacher**
 | Name | Type | Nullable |
 |------|------|----------|
 | Name | String | No |
-| Students | Ref | N/A |
 > **Link:** http://localhost:3000/teachers
 
 ## How it Run?
